@@ -11,7 +11,10 @@
 <body>
     <main class="p-5 md:p-20">
         <div>
-            <h1 class="text-lg font-semibold mb-8">Dashboard</h1>
+            <div class="flex justify-between items-center">
+                <h1 class="text-lg font-semibold mb-8">Dashboard</h1>
+                <a href="HomePage.php" class="text-sm font-medium">Back to home</a>
+            </div>
             <?php include "CountingRecords.php"; ?>
 
             <!-- Fetch Dashboard Products -->
