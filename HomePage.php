@@ -63,9 +63,6 @@
             }
         };
         ?>
-        <!-- <a href="Dashboard.php">Dashboard</a>
-        <a href="Dashboard.php">Dashboard</a>
-        <a href="Dashboard.php">Dashboard</a> -->
     </div>
 </body>
 
