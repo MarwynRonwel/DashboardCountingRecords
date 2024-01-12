@@ -51,7 +51,7 @@
             } else {
                 echo "
                     <p class='text-gray-500 text-sm mt-5'>
-                        Stock {$row['inventory']}
+                        Stock: {$row['inventory']}
                     </p>
                     <div class='flex justify-between items-center border-t pt-2'>
                                 <p class='text-sm text-gray-600 italic font-medium'>
