@@ -68,7 +68,6 @@ $conn->close();
                 <div class="flex justify-between items-center mt-10">
                     <a href="Dashboard.php" class="text-sm text-gray-500 block">Back to dashboard</a>
                     <button type="submit" class="text-sm font-medium text-gray-700 hover:text-black">Create order</button>
-
                 </div>
             </form>
             <div class="border rounded-lg py-3">
