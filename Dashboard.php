@@ -19,9 +19,15 @@
 
             <!-- Fetch Dashboard Products -->
             <section>
+                <?php
+                // Check if there are selected checkboxes
+                $hasSelectedCheckboxes = isset($_POST['selected']) && is_array($_POST['selected']) && !empty($_POST['selected']);
+                ?>
                 <div class="flex justify-between">
                     <h1 class="text-sm font-semibold my-2">In stock</h1>
                     <a href="AddStockForm.php" class="font-medium text-sm text-gray-600 hover:text-gray-800 duration-300 my-2">Add stock</a>
+                    <button id="delete-selected-button" onclick="deleteSelected()" class="font-medium text-sm text-red-600 hover:underline" style="display: <?php echo $hasSelectedCheckboxes ? 'inline-block' : 'none'; ?>">Delete Selected</button>
+                    <!-- <button onclick="deleteSelected()" class="font-medium text-sm text-red-600 hover:underline">Delete Selected</button> -->
                 </div>
                 <?php
                 $servername = "localhost";
@@ -34,9 +40,13 @@
 
                 if ($result->num_rows > 0) {
                     echo '<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                    <form action="./api/delete_selected.php" method="post">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    <input type="checkbox" id="select-all" onchange="toggleSelectAll()">
+                                </th>
                                 <th scope="col" class="px-6 py-3">
                                     ID
                                 </th>
@@ -63,9 +73,13 @@
                         while ($row = $result->fetch_assoc()) {
                             $stockValue = $row['price'] * $row['inventory'];
                             $deleteUrl = "./api/delete_stock.php?id=" . $row['id'];
+
                             echo "<tbody>
                                 <tr class='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600'>
-                                <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
+                                    <td class='px-6 py-4'>
+                                        <input type='checkbox' name='selected[]' value='{$row['id']}' onChange='displayDeleteButton()' class='checkbox'>
+                                    </td>
+                                    <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
                                         {$row['id']}
                                     </th>
                                     <th scope='row' class='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'>
@@ -93,9 +107,48 @@
                     }
 
                     echo '</table>
+                    </form>
                 </div>';
                 }
                 ?>
+
+                <script>
+                    function toggleSelectAll() {
+                        var checkboxes = document.querySelectorAll('.checkbox');
+                        var selectAllCheckbox = document.getElementById('select-all');
+
+                        checkboxes.forEach(function(checkbox) {
+                            checkbox.checked = selectAllCheckbox.checked;
+                        });
+
+                        updateDeleteButtonVisibility();
+                    }
+
+                    function displayDeleteButton() {
+                        updateDeleteButtonVisibility();
+                    }
+
+                    function deleteSelected() {
+                        var form = document.querySelector('form');
+                        form.submit();
+                    }
+
+                    function updateDeleteButtonVisibility() {
+                        var deleteButton = document.getElementById('delete-selected-button');
+
+                        // Check if any checkbox is selected
+                        var checkboxes = document.querySelectorAll('.checkbox');
+                        var anyCheckboxSelected = Array.from(checkboxes).some(function(checkbox) {
+                            return checkbox.checked;
+                        });
+
+                        // Show or hide the delete button based on whether any checkbox is selected
+                        deleteButton.style.display = anyCheckboxSelected ? 'inline-block' : 'none';
+                    }
+
+                    // Call the function to update button visibility when the page loads
+                    window.onload = updateDeleteButtonVisibility;
+                </script>
             </section>
 
 

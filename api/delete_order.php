@@ -12,11 +12,11 @@ if (!isset($id) || !is_numeric($id)) {
     die("Invalid ID");
 }
 
-$inventory = "SELECT inventory FROM Products WHERE productName = '$prdName'";
-$inventoryCount = mysqli_query($conn, $inventory);
-
 $qty = "SELECT quantitySold FROM Sales WHERE id = $id";
 $qtySold = mysqli_query($conn, $qty);
+
+$inventory = "SELECT inventory FROM Products WHERE productName = '$prdName'";
+$inventoryCount = mysqli_query($conn, $inventory);
 
 if ($inventoryCount && $qtySold) {
     $row = mysqli_fetch_assoc($inventoryCount);
